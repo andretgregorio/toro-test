@@ -12,7 +12,10 @@ describe('CreateAccountService', () => {
     service = module.get<CreateAccountService>(CreateAccountService);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+  describe('#createAccount', () => {
+    it('should create an account', async () => {
+      const result = await service.createAccount();
+      expect(result).toBe(true);
+    });
   });
 });
