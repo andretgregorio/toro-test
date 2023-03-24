@@ -20,5 +20,17 @@ describe('CreateAccountService', () => {
       const result = await service.createAccount(command);
       expect(result).toBe(true);
     });
+
+    describe('when password is smaller the 8 characters', () => {
+      it('should return false', async () => {
+        const command = new CreateAccountCommandFixture()
+          .withPassword('1234567')
+          .build();
+
+        const result = await service.createAccount(command);
+
+        expect(result).toBe(false);
+      });
+    });
   });
 });
