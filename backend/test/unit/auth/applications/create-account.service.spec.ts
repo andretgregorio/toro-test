@@ -22,10 +22,22 @@ describe('CreateAccountService', () => {
       expect(result).toBe(true);
     });
 
-    describe('when password is smaller the 8 characters', () => {
+    describe('when password is smaller than 8 characters', () => {
       it('should return a Business Error', async () => {
         const command = new CreateAccountCommandFixture()
           .withPassword('1234567')
+          .build();
+
+        const result = await service.createAccount(command);
+
+        expect(result).toBeInstanceOf(BusinessError);
+      });
+    });
+
+    describe('when password does not contain numbers', () => {
+      it('returns a Business Error', async () => {
+        const command = new CreateAccountCommandFixture()
+          .withPassword('abcdefgh')
           .build();
 
         const result = await service.createAccount(command);
