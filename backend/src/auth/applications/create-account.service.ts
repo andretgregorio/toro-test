@@ -1,10 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { CreateAccountCommand } from './ports/in/create-account-command';
+import { ValidationError } from '../domain/validation-error';
+import { BusinessError } from '../domain/business-error';
 
 @Injectable()
 export class CreateAccountService {
-  async createAccount(command: CreateAccountCommand): Promise<boolean> {
-    if (command.password.length < 8) return false;
+  async createAccount(
+    command: CreateAccountCommand,
+  ): Promise<BusinessError | boolean> {
+    if (command.password.length < 8)
+      return new ValidationError('Password should have at least 8 characters.');
 
     return true;
   }
