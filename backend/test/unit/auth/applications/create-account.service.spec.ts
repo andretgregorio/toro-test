@@ -1,5 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CreateAccountService } from 'src/auth/applications/create-account.service';
+import { CreateAccountCommandFixture } from '../__fixtures__/create-account-command-fixture';
 
 describe('CreateAccountService', () => {
   let service: CreateAccountService;
@@ -14,7 +15,9 @@ describe('CreateAccountService', () => {
 
   describe('#createAccount', () => {
     it('should create an account', async () => {
-      const result = await service.createAccount();
+      const command = new CreateAccountCommandFixture().build();
+
+      const result = await service.createAccount(command);
       expect(result).toBe(true);
     });
   });
