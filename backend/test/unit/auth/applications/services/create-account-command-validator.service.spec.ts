@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CreateAccountCommandValidatorService } from 'src/auth/applications/services/create-account-command-validator.service';
 import { CreateAccountCommandFixture } from '../../__fixtures__/create-account-command-fixture';
+import { ValidationError } from 'src/auth/domain/validation-error';
 
 describe('CreateAccountCommandValidatorService', () => {
   let service: CreateAccountCommandValidatorService;
@@ -21,9 +22,9 @@ describe('CreateAccountCommandValidatorService', () => {
         .withPassword('1234567')
         .build();
 
-      const result = service.createAccount(command);
+      const result = service.validate(command);
 
-      expect(result).toBeInstanceOf(BusinessError);
+      expect(result).toBeInstanceOf(ValidationError);
     });
 
     it('when password does not contain numbers', () => {
@@ -31,9 +32,9 @@ describe('CreateAccountCommandValidatorService', () => {
         .withPassword('abcdefgh')
         .build();
 
-      const result = service.createAccount(command);
+      const result = service.validate(command);
 
-      expect(result).toBeInstanceOf(BusinessError);
+      expect(result).toBeInstanceOf(ValidationError);
     });
   });
 });
