@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CreateAccountService } from '../../src/auth/applications/create-account.service';
+import { CreateAccountService } from 'src/auth/applications/create-account.service';
 
 describe('CreateAccountService', () => {
   let service: CreateAccountService;
