@@ -16,7 +16,9 @@ describe('CreateAccountService', () => {
 
   describe('#createAccount', () => {
     it('should create an account', async () => {
-      const command = new CreateAccountCommandFixture().build();
+      const command = new CreateAccountCommandFixture()
+        .withPassword('Test1234!')
+        .build();
 
       const result = await service.createAccount(command);
       expect(result).toBe(true);
