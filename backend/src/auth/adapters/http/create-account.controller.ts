@@ -1,9 +1,17 @@
-import { Controller, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
+import { CreateAccountCommand } from 'src/auth/applications/ports/in/create-account-command';
 
 @Controller('auth/v1/accounts')
 export class CreateAccountController {
   @Post()
-  async createAccount() {
+  @UsePipes(new ValidationPipe({ transform: true }))
+  async createAccount(@Body() createAccountCommand: CreateAccountCommand) {
     return { message: 'Hello World' };
   }
 }
