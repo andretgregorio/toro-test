@@ -36,5 +36,15 @@ describe('CreateAccountCommandValidatorService', () => {
 
       expect(result).toBeInstanceOf(ValidationError);
     });
+
+    it('when password does not contain letters', () => {
+      const command = new CreateAccountCommandFixture()
+        .withPassword('123456789')
+        .build();
+
+      const result = service.validate(command);
+
+      expect(result).toBeInstanceOf(ValidationError);
+    });
   });
 });
