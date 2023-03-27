@@ -1,4 +1,9 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Post } from '@nestjs/common';
 
-@Controller('create-account')
-export class CreateAccountController {}
+@Controller('auth/v1/accounts')
+export class CreateAccountController {
+  @Post()
+  async createAccount() {
+    return { message: 'Hello World' };
+  }
+}

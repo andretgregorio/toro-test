@@ -12,7 +12,13 @@ describe('CreateAccountController', () => {
     controller = module.get<CreateAccountController>(CreateAccountController);
   });
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
+  describe('#createAccount', () => {
+    describe('when account is correctly created', () => {
+      it('returns a JSON with the correct representation of an account', async () => {
+        const result = await controller.createAccount();
+
+        expect(result).toEqual({ message: 'Hello World' });
+      });
+    });
   });
 });
