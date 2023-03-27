@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { SaveAccountService } from 'src/auth/adapters/persistance/save-account.service';
+import { SaveAccountRepository } from 'src/auth/adapters/persistance/save-account.service';
 
 describe('SaveAccountService', () => {
-  let service: SaveAccountService;
+  let service: SaveAccountRepository;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [SaveAccountService],
+      providers: [SaveAccountRepository],
     }).compile();
 
-    service = module.get<SaveAccountService>(SaveAccountService);
+    service = module.get<SaveAccountRepository>(SaveAccountRepository);
   });
 
   describe('#saveAccount', () => {

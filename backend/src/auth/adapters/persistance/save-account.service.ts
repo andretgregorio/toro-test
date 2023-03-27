@@ -3,7 +3,7 @@ import { SaveAccountPort } from 'src/auth/applications/ports/out/save-account-po
 import { Account } from 'src/auth/domain/account';
 
 @Injectable()
-export class SaveAccountService implements SaveAccountPort {
+export class SaveAccountRepository implements SaveAccountPort {
   async saveAccount(email: string, password: string): Promise<Account> {
     return new Account({
       id: 1,
