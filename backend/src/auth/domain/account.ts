@@ -1,5 +1,5 @@
 interface AccountConstructor {
-  id: string;
+  id: number;
   email: string;
   password: string;
   createdAt: Date;
@@ -7,7 +7,7 @@ interface AccountConstructor {
 }
 
 export class Account {
-  id: string;
+  id: number;
   email: string;
   password: string;
   createdAt: Date;

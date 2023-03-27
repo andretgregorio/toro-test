@@ -5,6 +5,7 @@ import { CreateAccountCommandValidatorService } from 'src/auth/applications/serv
 import { ValidationError } from 'src/auth/domain/validation-error';
 import { BusinessError } from 'src/auth/domain/business-error';
 import { PasswordHashService } from 'src/auth/applications/services/password-hash.service';
+import { Account } from 'src/auth/domain/account';
 
 describe('CreateAccountService', () => {
   let service: CreateAccountService;
@@ -33,12 +34,14 @@ describe('CreateAccountService', () => {
 
   describe('#createAccount', () => {
     describe('when there is no validation error', () => {
+      const mockHashedPassword = 'hashedPassword';
+
       beforeEach(() => {
         jest.spyOn(validationService, 'validate').mockReturnValue(true);
 
         jest
           .spyOn(hashService, 'generateHash')
-          .mockResolvedValue('hashedPassword');
+          .mockResolvedValue(mockHashedPassword);
       });
 
       it('should create an account', async () => {
@@ -46,9 +49,17 @@ describe('CreateAccountService', () => {
           .withPassword('Test1234!')
           .build();
 
-        const result = await service.createAccount(command);
+        const result = (await service.createAccount(command)) as Account;
 
-        expect(result).toBe(true);
+        expect(result).toStrictEqual(
+          new Account({
+            id: 1,
+            email: command.email,
+            password: mockHashedPassword,
+            createdAt: result.createdAt,
+            updatedAt: result.updatedAt,
+          }),
+        );
       });
     });
 

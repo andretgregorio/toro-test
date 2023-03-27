@@ -3,6 +3,7 @@ import { CreateAccountCommand } from './ports/in/create-account-command';
 import { BusinessError } from '../domain/business-error';
 import { CreateAccountCommandValidatorService } from './services/create-account-command-validator.service';
 import { PasswordHashService } from './services/password-hash.service';
+import { Account } from '../domain/account';
 
 @Injectable()
 export class CreateAccountService {
@@ -14,7 +15,7 @@ export class CreateAccountService {
 
   async createAccount(
     command: CreateAccountCommand,
-  ): Promise<BusinessError | boolean> {
+  ): Promise<BusinessError | Account> {
     const validationResult = this.validationService.validate(command);
 
     if (validationResult instanceof BusinessError) return validationResult;
@@ -23,6 +24,14 @@ export class CreateAccountService {
       command.password,
     );
 
-    return true;
+    const account = new Account({
+      id: 1,
+      email: command.email,
+      password: hashedPassword,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+
+    return account;
   }
 }
