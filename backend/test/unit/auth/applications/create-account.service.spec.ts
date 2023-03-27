@@ -4,20 +4,27 @@ import { CreateAccountCommandFixture } from '../__fixtures__/create-account-comm
 import { CreateAccountCommandValidatorService } from 'src/auth/applications/services/create-account-command-validator.service';
 import { ValidationError } from 'src/auth/domain/validation-error';
 import { BusinessError } from 'src/auth/domain/business-error';
+import { PasswordHashService } from 'src/auth/applications/services/password-hash.service';
 
 describe('CreateAccountService', () => {
   let service: CreateAccountService;
   let validationService: CreateAccountCommandValidatorService;
+  let hashService: PasswordHashService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [CreateAccountService, CreateAccountCommandValidatorService],
+      providers: [
+        CreateAccountService,
+        CreateAccountCommandValidatorService,
+        PasswordHashService,
+      ],
     }).compile();
 
     service = module.get<CreateAccountService>(CreateAccountService);
     validationService = module.get<CreateAccountCommandValidatorService>(
       CreateAccountCommandValidatorService,
     );
+    hashService = module.get<PasswordHashService>(PasswordHashService);
   });
 
   afterEach(() => {
@@ -28,6 +35,10 @@ describe('CreateAccountService', () => {
     describe('when there is no validation error', () => {
       beforeEach(() => {
         jest.spyOn(validationService, 'validate').mockReturnValue(true);
+
+        jest
+          .spyOn(hashService, 'generateHash')
+          .mockResolvedValue('hashedPassword');
       });
 
       it('should create an account', async () => {
@@ -48,6 +59,10 @@ describe('CreateAccountService', () => {
           .mockReturnValue(
             new ValidationError('Password should have at least 8 characters.'),
           );
+
+        jest
+          .spyOn(hashService, 'generateHash')
+          .mockResolvedValue('hashedPassword');
       });
 
       it('should return a BusinessError', async () => {
