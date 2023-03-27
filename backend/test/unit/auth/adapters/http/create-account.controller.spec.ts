@@ -25,7 +25,8 @@ describe('CreateAccountController', () => {
 
         const result = await controller.createAccount(requestPayload);
 
-        expect(result).toEqual({ message: 'Hello World' });
+        expect(result).toHaveProperty('id');
+        expect(result).toHaveProperty('email');
       });
     });
   });
