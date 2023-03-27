@@ -3,6 +3,9 @@ import { CreateAccountController } from 'src/auth/adapters/http/create-account.c
 import { CreateAccountCommandFixture } from '../../__fixtures__/create-account-command-fixture';
 import { CreateAccountService } from 'src/auth/applications/create-account.service';
 import { Account } from 'src/auth/domain/account';
+import { ValidationError } from 'class-validator';
+import { BusinessError } from 'src/auth/domain/business-error';
+import { BadRequestException } from '@nestjs/common';
 
 describe('CreateAccountController', () => {
   let controller: CreateAccountController;
@@ -37,6 +40,25 @@ describe('CreateAccountController', () => {
 
         expect(result.account.id).toBe(createdAccount.id);
         expect(result.account.email).toBe(createdAccount.email);
+      });
+    });
+
+    describe('when the account cannot be created', () => {
+      it('throws a BadRequestException', async () => {
+        const requestPayload = new CreateAccountCommandFixture().build();
+
+        jest
+          .spyOn(service, 'createAccount')
+          .mockResolvedValue(
+            new BusinessError({ code: 400, message: 'Some error' }),
+          );
+
+        try {
+          await controller.createAccount(requestPayload);
+          expect(true).toBe(false);
+        } catch (error) {
+          expect(error).toBeInstanceOf(BadRequestException);
+        }
       });
     });
   });
