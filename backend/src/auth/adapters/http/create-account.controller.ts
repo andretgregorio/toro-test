@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Post,
@@ -7,6 +8,8 @@ import {
 } from '@nestjs/common';
 import { CreateAccountService } from 'src/auth/applications/create-account.service';
 import { CreateAccountCommand } from 'src/auth/applications/ports/in/create-account-command';
+import { AccountJsonResponse } from './json/account-response';
+import { BusinessError } from 'src/auth/domain/business-error';
 
 @Controller('auth/v1/accounts')
 export class CreateAccountController {
@@ -17,6 +20,10 @@ export class CreateAccountController {
   async createAccount(@Body() createAccountCommand: CreateAccountCommand) {
     const account = await this.service.createAccount(createAccountCommand);
 
-    return { message: 'Hello World' };
+    if (account instanceof BusinessError) throw new BadRequestException();
+
+    const response = new AccountJsonResponse(account);
+
+    return { account: response };
   }
 }
