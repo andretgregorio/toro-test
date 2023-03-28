@@ -75,7 +75,7 @@ describe('CreateAccountService', () => {
       });
     });
 
-    describe('when there is a validation error', () => {
+    describe('when there is a password validation error', () => {
       beforeEach(() => {
         jest
           .spyOn(validationService, 'validate')
@@ -90,6 +90,18 @@ describe('CreateAccountService', () => {
 
       it('should return a BusinessError', async () => {
         const command = new CreateAccountCommandFixture().build();
+
+        const result = await service.createAccount(command);
+
+        expect(result).toBeInstanceOf(BusinessError);
+      });
+    });
+
+    describe('when there already is an account with the same email', () => {
+      it('should return a BusinessError', async () => {
+        const command = new CreateAccountCommandFixture().build();
+
+        jest.spyOn(validationService, 'validate').mockReturnValue(true);
 
         const result = await service.createAccount(command);
 
