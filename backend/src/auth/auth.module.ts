@@ -5,6 +5,7 @@ import { PasswordHashService } from './applications/services/password-hash.servi
 import { CreateAccountController } from './adapters/http/create-account.controller';
 import { SaveAccountRepository } from './adapters/persistance/save-account.service';
 import { SaveAccountPortToken } from './applications/ports/out/save-account-port';
+import { TypeOrmModule } from '@nestjs/typeorm';
 
 @Module({
   providers: [
@@ -14,5 +15,17 @@ import { SaveAccountPortToken } from './applications/ports/out/save-account-port
     { provide: SaveAccountPortToken, useClass: SaveAccountRepository },
   ],
   controllers: [CreateAccountController],
+  imports: [
+    TypeOrmModule.forRoot({
+      type: 'postgres',
+      host: 'postgres',
+      port: 5432,
+      username: 'postgres',
+      password: 'postgres',
+      database: 'auth',
+      entities: [],
+      synchronize: true,
+    }),
+  ],
 })
 export class AuthModule {}
