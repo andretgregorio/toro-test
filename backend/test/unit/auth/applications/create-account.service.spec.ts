@@ -6,11 +6,18 @@ import { ValidationError } from 'src/auth/domain/validation-error';
 import { BusinessError } from 'src/auth/domain/business-error';
 import { PasswordHashService } from 'src/auth/applications/services/password-hash.service';
 import { Account } from 'src/auth/domain/account';
+import {
+  SaveAccountPort,
+  SaveAccountPortToken,
+} from 'src/auth/applications/ports/out/save-account-port';
 
 describe('CreateAccountService', () => {
   let service: CreateAccountService;
   let validationService: CreateAccountCommandValidatorService;
   let hashService: PasswordHashService;
+  const mockSaveAccountPort = {
+    saveAccount: jest.fn(),
+  } as unknown as SaveAccountPort;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -18,6 +25,7 @@ describe('CreateAccountService', () => {
         CreateAccountService,
         CreateAccountCommandValidatorService,
         PasswordHashService,
+        { provide: SaveAccountPortToken, useValue: mockSaveAccountPort },
       ],
     }).compile();
 
@@ -49,17 +57,21 @@ describe('CreateAccountService', () => {
           .withPassword('Test1234!')
           .build();
 
+        const createdAccount = new Account({
+          id: 1,
+          email: command.email,
+          password: mockHashedPassword,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        });
+
+        jest
+          .spyOn(mockSaveAccountPort, 'saveAccount')
+          .mockResolvedValue(createdAccount);
+
         const result = (await service.createAccount(command)) as Account;
 
-        expect(result).toStrictEqual(
-          new Account({
-            id: 1,
-            email: command.email,
-            password: mockHashedPassword,
-            createdAt: result.createdAt,
-            updatedAt: result.updatedAt,
-          }),
-        );
+        expect(result).toStrictEqual(createdAccount);
       });
     });
 

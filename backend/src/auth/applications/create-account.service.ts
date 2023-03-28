@@ -1,9 +1,13 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { CreateAccountCommand } from './ports/in/create-account-command';
 import { BusinessError } from '../domain/business-error';
 import { CreateAccountCommandValidatorService } from './services/create-account-command-validator.service';
 import { PasswordHashService } from './services/password-hash.service';
 import { Account } from '../domain/account';
+import {
+  SaveAccountPort,
+  SaveAccountPortToken,
+} from './ports/out/save-account-port';
 
 @Injectable()
 export class CreateAccountService {
@@ -11,6 +15,9 @@ export class CreateAccountService {
     private validationService: CreateAccountCommandValidatorService,
 
     private hashService: PasswordHashService,
+
+    @Inject(SaveAccountPortToken)
+    private saveAccountPort: SaveAccountPort,
   ) {}
 
   async createAccount(
@@ -24,13 +31,10 @@ export class CreateAccountService {
       command.password,
     );
 
-    const account = new Account({
-      id: 1,
-      email: command.email,
-      password: hashedPassword,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    });
+    const account = this.saveAccountPort.saveAccount(
+      command.email,
+      hashedPassword,
+    );
 
     return account;
   }

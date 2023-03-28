@@ -4,13 +4,14 @@ import { CreateAccountCommandValidatorService } from './applications/services/cr
 import { PasswordHashService } from './applications/services/password-hash.service';
 import { CreateAccountController } from './adapters/http/create-account.controller';
 import { SaveAccountRepository } from './adapters/persistance/save-account.service';
+import { SaveAccountPortToken } from './applications/ports/out/save-account-port';
 
 @Module({
   providers: [
     CreateAccountService,
     CreateAccountCommandValidatorService,
     PasswordHashService,
-    SaveAccountRepository,
+    { provide: SaveAccountPortToken, useClass: SaveAccountRepository },
   ],
   controllers: [CreateAccountController],
 })
