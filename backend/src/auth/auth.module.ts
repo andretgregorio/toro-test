@@ -27,6 +27,7 @@ import { AccountTable } from './adapters/persistance/tables/account-table';
       entities: [AccountTable],
       synchronize: true,
     }),
+    TypeOrmModule.forFeature([AccountTable]),
   ],
 })
 export class AuthModule {}
