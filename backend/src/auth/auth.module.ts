@@ -9,6 +9,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AccountTable } from './adapters/persistance/tables/account-table';
 import { FindAccountService } from './adapters/persistance/find-account.service';
 import { FindAccountByEmailPortToken } from './applications/ports/out/find-account-by-email';
+import { JwtService } from './applications/services/jwt.service';
 
 @Module({
   providers: [
@@ -17,6 +18,7 @@ import { FindAccountByEmailPortToken } from './applications/ports/out/find-accou
     PasswordHashService,
     { provide: SaveAccountPortToken, useClass: SaveAccountRepository },
     { provide: FindAccountByEmailPortToken, useClass: FindAccountService },
+    JwtService,
   ],
   controllers: [CreateAccountController],
   imports: [
