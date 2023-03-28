@@ -6,6 +6,7 @@ import { CreateAccountController } from './adapters/http/create-account.controll
 import { SaveAccountRepository } from './adapters/persistance/save-account.service';
 import { SaveAccountPortToken } from './applications/ports/out/save-account-port';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AccountTable } from './adapters/persistance/tables/account-table';
 
 @Module({
   providers: [
@@ -23,7 +24,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       username: 'postgres',
       password: 'postgres',
       database: 'auth',
-      entities: [],
+      entities: [AccountTable],
       synchronize: true,
     }),
   ],
