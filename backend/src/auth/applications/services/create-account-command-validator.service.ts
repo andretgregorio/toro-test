@@ -11,7 +11,7 @@ export class CreateAccountCommandValidatorService {
 
     if (!passwordConfig.allowedCharactersRegex.test(command.password))
       return new ValidationError(
-        'Password should contain at least one number.',
+        'Password should contain at least one number, one lower case letter and one upper case letter.',
       );
 
     return true;
