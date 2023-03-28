@@ -31,7 +31,7 @@ export class CreateAccountService {
       command.password,
     );
 
-    const account = this.saveAccountPort.saveAccount(
+    const account = await this.saveAccountPort.saveAccount(
       command.email,
       hashedPassword,
     );
