@@ -8,6 +8,11 @@ import {
   SaveAccountPort,
   SaveAccountPortToken,
 } from './ports/out/save-account-port';
+import {
+  FindAccountByEmailPort,
+  FindAccountByEmailPortToken,
+} from './ports/out/find-account-by-email';
+import { ValidationError } from '../domain/validation-error';
 
 @Injectable()
 export class CreateAccountService {
@@ -18,6 +23,9 @@ export class CreateAccountService {
 
     @Inject(SaveAccountPortToken)
     private saveAccountPort: SaveAccountPort,
+
+    @Inject(FindAccountByEmailPortToken)
+    private findAccountPort: FindAccountByEmailPort,
   ) {}
 
   async createAccount(
@@ -26,6 +34,12 @@ export class CreateAccountService {
     const validationResult = this.validationService.validate(command);
 
     if (validationResult instanceof BusinessError) return validationResult;
+
+    const foundAccount = await this.findAccountPort.findAccountByEmail(
+      command.email,
+    );
+
+    if (foundAccount) return new ValidationError('Email already in use');
 
     const hashedPassword = await this.hashService.generateHash(
       command.password,

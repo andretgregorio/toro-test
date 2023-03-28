@@ -10,6 +10,11 @@ import {
   SaveAccountPort,
   SaveAccountPortToken,
 } from 'src/auth/applications/ports/out/save-account-port';
+import {
+  FindAccountByEmailPort,
+  FindAccountByEmailPortToken,
+} from 'src/auth/applications/ports/out/find-account-by-email';
+import { AccountFixture } from '../__fixtures__/account-fixture';
 
 describe('CreateAccountService', () => {
   let service: CreateAccountService;
@@ -18,6 +23,9 @@ describe('CreateAccountService', () => {
   const mockSaveAccountPort = {
     saveAccount: jest.fn(),
   } as unknown as SaveAccountPort;
+  const mockFindAccountPort = {
+    findAccountByEmail: jest.fn(),
+  } as unknown as FindAccountByEmailPort;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -26,6 +34,7 @@ describe('CreateAccountService', () => {
         CreateAccountCommandValidatorService,
         PasswordHashService,
         { provide: SaveAccountPortToken, useValue: mockSaveAccountPort },
+        { provide: FindAccountByEmailPortToken, useValue: mockFindAccountPort },
       ],
     }).compile();
 
@@ -100,8 +109,15 @@ describe('CreateAccountService', () => {
     describe('when there already is an account with the same email', () => {
       it('should return a BusinessError', async () => {
         const command = new CreateAccountCommandFixture().build();
+        const foundAccount = new AccountFixture()
+          .withEmail(command.email)
+          .withPassword(command.password)
+          .build();
 
         jest.spyOn(validationService, 'validate').mockReturnValue(true);
+        jest
+          .spyOn(mockFindAccountPort, 'findAccountByEmail')
+          .mockResolvedValue(foundAccount);
 
         const result = await service.createAccount(command);
 
