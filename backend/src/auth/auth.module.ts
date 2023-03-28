@@ -7,6 +7,8 @@ import { SaveAccountRepository } from './adapters/persistance/save-account.servi
 import { SaveAccountPortToken } from './applications/ports/out/save-account-port';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AccountTable } from './adapters/persistance/tables/account-table';
+import { FindAccountService } from './adapters/persistance/find-account.service';
+import { FindAccountByEmailPortToken } from './applications/ports/out/find-account-by-email';
 
 @Module({
   providers: [
@@ -14,6 +16,7 @@ import { AccountTable } from './adapters/persistance/tables/account-table';
     CreateAccountCommandValidatorService,
     PasswordHashService,
     { provide: SaveAccountPortToken, useClass: SaveAccountRepository },
+    { provide: FindAccountByEmailPortToken, useClass: FindAccountService },
   ],
   controllers: [CreateAccountController],
   imports: [
