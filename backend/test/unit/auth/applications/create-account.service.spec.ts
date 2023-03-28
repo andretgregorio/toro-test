@@ -15,11 +15,14 @@ import {
   FindAccountByEmailPortToken,
 } from 'src/auth/applications/ports/out/find-account-by-email';
 import { AccountFixture } from '../__fixtures__/account-fixture';
+import { JwtService } from 'src/auth/applications/services/jwt.service';
 
 describe('CreateAccountService', () => {
   let service: CreateAccountService;
   let validationService: CreateAccountCommandValidatorService;
   let hashService: PasswordHashService;
+  let jwtService: JwtService;
+
   const mockSaveAccountPort = {
     saveAccount: jest.fn(),
   } as unknown as SaveAccountPort;
@@ -33,6 +36,7 @@ describe('CreateAccountService', () => {
         CreateAccountService,
         CreateAccountCommandValidatorService,
         PasswordHashService,
+        JwtService,
         { provide: SaveAccountPortToken, useValue: mockSaveAccountPort },
         { provide: FindAccountByEmailPortToken, useValue: mockFindAccountPort },
       ],
@@ -43,6 +47,7 @@ describe('CreateAccountService', () => {
       CreateAccountCommandValidatorService,
     );
     hashService = module.get<PasswordHashService>(PasswordHashService);
+    jwtService = module.get<JwtService>(JwtService);
   });
 
   afterEach(() => {
@@ -52,6 +57,7 @@ describe('CreateAccountService', () => {
   describe('#createAccount', () => {
     describe('when there is no validation error', () => {
       const mockHashedPassword = 'hashedPassword';
+      const jwtoken = 'jwtoken';
 
       beforeEach(() => {
         jest.spyOn(validationService, 'validate').mockReturnValue(true);
@@ -59,6 +65,8 @@ describe('CreateAccountService', () => {
         jest
           .spyOn(hashService, 'generateHash')
           .mockResolvedValue(mockHashedPassword);
+
+        jest.spyOn(jwtService, 'createToken').mockReturnValue(jwtoken);
       });
 
       it('should create an account', async () => {
@@ -78,9 +86,12 @@ describe('CreateAccountService', () => {
           .spyOn(mockSaveAccountPort, 'saveAccount')
           .mockResolvedValue(createdAccount);
 
-        const result = (await service.createAccount(command)) as Account;
+        const [account, accessToken] = (await service.createAccount(
+          command,
+        )) as Tuple<Account, string>;
 
-        expect(result).toStrictEqual(createdAccount);
+        expect(account).toStrictEqual(createdAccount);
+        expect(accessToken).toBe(jwtoken);
       });
     });
 

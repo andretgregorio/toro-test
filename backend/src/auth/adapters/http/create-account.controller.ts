@@ -18,10 +18,14 @@ export class CreateAccountController {
   @Post()
   @UsePipes(new ValidationPipe({ transform: true }))
   async createAccount(@Body() createAccountCommand: CreateAccountCommand) {
-    const account = await this.service.createAccount(createAccountCommand);
+    const serviceResult = await this.service.createAccount(
+      createAccountCommand,
+    );
 
-    if (account instanceof BusinessError)
-      throw new BadRequestException({ error: account.message });
+    if (serviceResult instanceof BusinessError)
+      throw new BadRequestException({ error: serviceResult.message });
+
+    const [account, accessToken] = serviceResult;
 
     const response = new AccountJsonResponse(account);
 

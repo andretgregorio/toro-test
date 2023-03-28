@@ -26,6 +26,7 @@ describe('CreateAccountController', () => {
     describe('when account is correctly created', () => {
       it('returns a JSON with the correct representation of an account', async () => {
         const requestPayload = new CreateAccountCommandFixture().build();
+        const accessToken = 'accessToken';
         const createdAccount = new Account({
           id: 1,
           email: requestPayload.email,
@@ -34,7 +35,9 @@ describe('CreateAccountController', () => {
           updatedAt: new Date(),
         });
 
-        jest.spyOn(service, 'createAccount').mockResolvedValue(createdAccount);
+        jest
+          .spyOn(service, 'createAccount')
+          .mockResolvedValue([createdAccount, accessToken]);
 
         const result = await controller.createAccount(requestPayload);
 

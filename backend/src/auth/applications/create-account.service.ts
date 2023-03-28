@@ -13,6 +13,7 @@ import {
   FindAccountByEmailPortToken,
 } from './ports/out/find-account-by-email';
 import { ValidationError } from '../domain/validation-error';
+import { JwtService } from './services/jwt.service';
 
 @Injectable()
 export class CreateAccountService {
@@ -20,6 +21,8 @@ export class CreateAccountService {
     private validationService: CreateAccountCommandValidatorService,
 
     private hashService: PasswordHashService,
+
+    private jwtService: JwtService,
 
     @Inject(SaveAccountPortToken)
     private saveAccountPort: SaveAccountPort,
@@ -30,7 +33,7 @@ export class CreateAccountService {
 
   async createAccount(
     command: CreateAccountCommand,
-  ): Promise<BusinessError | Account> {
+  ): Promise<BusinessError | Tuple<Account, string>> {
     const validationResult = this.validationService.validate(command);
 
     if (validationResult instanceof BusinessError) return validationResult;
@@ -50,6 +53,8 @@ export class CreateAccountService {
       hashedPassword,
     );
 
-    return account;
+    const accessToken = this.jwtService.createToken(account.id, account.email);
+
+    return [account, accessToken];
   }
 }
