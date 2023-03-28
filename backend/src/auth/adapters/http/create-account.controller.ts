@@ -20,7 +20,8 @@ export class CreateAccountController {
   async createAccount(@Body() createAccountCommand: CreateAccountCommand) {
     const account = await this.service.createAccount(createAccountCommand);
 
-    if (account instanceof BusinessError) throw new BadRequestException();
+    if (account instanceof BusinessError)
+      throw new BadRequestException({ error: account.message });
 
     const response = new AccountJsonResponse(account);
 
