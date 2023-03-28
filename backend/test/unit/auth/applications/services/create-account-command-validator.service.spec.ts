@@ -16,30 +16,50 @@ describe('CreateAccountCommandValidatorService', () => {
     );
   });
 
+  describe('should return true', () => {
+    it.each([{ password: '1234Qwer' }, { password: 'qWer1234' }])(
+      'when password is $password',
+      ({ password }) => {
+        const command = new CreateAccountCommandFixture()
+          .withPassword(password)
+          .build();
+
+        const result = service.validate(command);
+
+        expect(result).toBe(true);
+      },
+    );
+  });
+
   describe('should return a Validation Error', () => {
-    it('when password is smaller than 8 characters', () => {
+    it.each([
+      {
+        password: '1a2B3c',
+        description: 'when password is smaller than 8 characters',
+      },
+      {
+        password: 'aBcDeFgH',
+        description: 'when password does not contain numbers',
+      },
+      {
+        password: '123456789',
+        description: 'when password does not contain letters',
+      },
+      {
+        password: '1234qwer',
+        description: 'when password does not contain upper case letters',
+      },
+      {
+        password: '1234QWER',
+        description: 'when password does not contain lower case letters',
+      },
+      {
+        password: '1234Qwer!@#$',
+        description: 'when password contains special characters',
+      },
+    ])('$description', ({ password }) => {
       const command = new CreateAccountCommandFixture()
-        .withPassword('1234567')
-        .build();
-
-      const result = service.validate(command);
-
-      expect(result).toBeInstanceOf(ValidationError);
-    });
-
-    it('when password does not contain numbers', () => {
-      const command = new CreateAccountCommandFixture()
-        .withPassword('abcdefgh')
-        .build();
-
-      const result = service.validate(command);
-
-      expect(result).toBeInstanceOf(ValidationError);
-    });
-
-    it('when password does not contain letters', () => {
-      const command = new CreateAccountCommandFixture()
-        .withPassword('123456789')
+        .withPassword(password)
         .build();
 
       const result = service.validate(command);
