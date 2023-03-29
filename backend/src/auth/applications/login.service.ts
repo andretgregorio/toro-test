@@ -4,6 +4,7 @@ import {
   FindAccountByEmailPortToken,
 } from './ports/out/find-account-by-email';
 import { LoginCommand } from './ports/in/login-command';
+import { LoginError } from '../domain/login-error';
 
 @Injectable()
 export class LoginService {
@@ -16,6 +17,11 @@ export class LoginService {
     const account = await this.findAccountPort.findAccountByEmail(
       command.email,
     );
+
+    if (!account)
+      return new LoginError(
+        'Invalid credentials. Verify the the email and password and try again.',
+      );
 
     return account;
   }

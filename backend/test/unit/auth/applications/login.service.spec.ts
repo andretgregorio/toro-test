@@ -7,6 +7,7 @@ import {
 import { Account } from 'src/auth/domain/account';
 import { LoginCommandFixture } from '../__fixtures__/login-command-fixture';
 import { AccountFixture } from '../__fixtures__/account-fixture';
+import { BusinessError } from 'src/auth/domain/business-error';
 
 describe('LoginService', () => {
   let service: LoginService;
@@ -41,6 +42,22 @@ describe('LoginService', () => {
       const result = await service.login(command);
 
       expect(result).toBeInstanceOf(Account);
+    });
+  });
+
+  describe('when the provided email is not found in the database', () => {
+    const command = new LoginCommandFixture().build();
+
+    beforeEach(() => {
+      jest
+        .spyOn(mockFindAccountPort, 'findAccountByEmail')
+        .mockResolvedValue(null);
+    });
+
+    it('should return a Business Error', async () => {
+      const failedLogin = await service.login(command);
+
+      expect(failedLogin).toBeInstanceOf(BusinessError);
     });
   });
 });
