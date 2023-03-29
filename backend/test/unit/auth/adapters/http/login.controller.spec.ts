@@ -5,6 +5,7 @@ import { LoginService } from 'src/auth/applications/login.service';
 import { LoginCommandFixture } from '../../__fixtures__/login-command-fixture';
 import { AccountFixture } from '../../__fixtures__/account-fixture';
 import { LoginError } from 'src/auth/domain/login-error';
+import { JwtService } from 'src/auth/applications/services/jwt.service';
 
 describe('LoginController', () => {
   let controller: LoginController;
@@ -16,7 +17,10 @@ describe('LoginController', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [LoginController],
-      providers: [{ provide: LoginService, useValue: mockLoginService }],
+      providers: [
+        { provide: LoginService, useValue: mockLoginService },
+        JwtService,
+      ],
     }).compile();
 
     controller = module.get<LoginController>(LoginController);
