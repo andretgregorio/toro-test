@@ -6,6 +6,7 @@ import {
 } from 'src/auth/applications/ports/out/find-account-by-email';
 import { Account } from 'src/auth/domain/account';
 import { LoginCommandFixture } from '../__fixtures__/login-command-fixture';
+import { AccountFixture } from '../__fixtures__/account-fixture';
 
 describe('LoginService', () => {
   let service: LoginService;
@@ -28,6 +29,14 @@ describe('LoginService', () => {
   describe('when the login attempt is successful', () => {
     it('should return the account information', async () => {
       const command = new LoginCommandFixture().build();
+      const account = new AccountFixture()
+        .withEmail(command.email)
+        .withPassword(command.password)
+        .build();
+
+      jest
+        .spyOn(mockFindAccountPort, 'findAccountByEmail')
+        .mockResolvedValue(account);
 
       const result = await service.login(command);
 

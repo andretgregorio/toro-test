@@ -12,5 +12,11 @@ export class LoginService {
     private findAccountPort: FindAccountByEmailPort,
   ) {}
 
-  async login(command: LoginCommand) {}
+  async login(command: LoginCommand) {
+    const account = await this.findAccountPort.findAccountByEmail(
+      command.email,
+    );
+
+    return account;
+  }
 }
