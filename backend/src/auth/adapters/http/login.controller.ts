@@ -14,6 +14,7 @@ import { AccountJsonResponse } from './json/account-response';
 @Controller('auth/v1')
 export class LoginController {
   constructor(private service: LoginService) {}
+
   @Post('/login')
   @UsePipes(new ValidationPipe({ transform: true }))
   async login(@Body() loginCommand: LoginCommand) {
