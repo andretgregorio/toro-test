@@ -28,17 +28,19 @@ describe('LoginService', () => {
   });
 
   describe('when the login attempt is successful', () => {
-    it('should return the account information', async () => {
-      const command = new LoginCommandFixture().build();
-      const account = new AccountFixture()
-        .withEmail(command.email)
-        .withPassword(command.password)
-        .build();
+    const command = new LoginCommandFixture().build();
+    const account = new AccountFixture()
+      .withEmail(command.email)
+      .withPassword(command.password)
+      .build();
 
+    beforeEach(() => {
       jest
         .spyOn(mockFindAccountPort, 'findAccountByEmail')
         .mockResolvedValue(account);
+    });
 
+    it('should return the account information', async () => {
       const result = await service.login(command);
 
       expect(result).toBeInstanceOf(Account);
