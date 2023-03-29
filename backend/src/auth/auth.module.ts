@@ -11,6 +11,7 @@ import { FindAccountService } from './adapters/persistance/find-account.service'
 import { FindAccountByEmailPortToken } from './applications/ports/out/find-account-by-email';
 import { JwtService } from './applications/services/jwt.service';
 import { LoginService } from './applications/login.service';
+import { LoginController } from './adapters/http/login.controller';
 
 @Module({
   providers: [
@@ -22,7 +23,7 @@ import { LoginService } from './applications/login.service';
     JwtService,
     LoginService,
   ],
-  controllers: [CreateAccountController],
+  controllers: [CreateAccountController, LoginController],
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
