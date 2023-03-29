@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { UnauthorizedException } from '@nestjs/common';
 import { LoginController } from 'src/auth/adapters/http/login.controller';
 import { LoginService } from 'src/auth/applications/login.service';
 import { LoginCommandFixture } from '../../__fixtures__/login-command-fixture';
 import { AccountFixture } from '../../__fixtures__/account-fixture';
 import { LoginError } from 'src/auth/domain/login-error';
-import { ForbiddenException } from '@nestjs/common';
 
 describe('LoginController', () => {
   let controller: LoginController;
@@ -59,7 +59,7 @@ describe('LoginController', () => {
       try {
         await controller.login(command);
       } catch (error) {
-        expect(error).toBeInstanceOf(ForbiddenException);
+        expect(error).toBeInstanceOf(UnauthorizedException);
       }
     });
   });

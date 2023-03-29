@@ -1,8 +1,8 @@
 import {
   Body,
   Controller,
-  ForbiddenException,
   Post,
+  UnauthorizedException,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
@@ -20,7 +20,7 @@ export class LoginController {
     const resultOrError = await this.service.login(loginCommand);
 
     if (resultOrError instanceof BusinessError)
-      throw new ForbiddenException({ error: resultOrError.message });
+      throw new UnauthorizedException({ error: resultOrError.message });
 
     const [account, accessToken] = resultOrError;
     const jsonAccount = new AccountJsonResponse(account);
