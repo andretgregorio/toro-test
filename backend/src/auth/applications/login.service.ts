@@ -3,6 +3,7 @@ import {
   FindAccountByEmailPort,
   FindAccountByEmailPortToken,
 } from './ports/out/find-account-by-email';
+import { LoginCommand } from './ports/in/login-command';
 
 @Injectable()
 export class LoginService {
@@ -11,5 +12,5 @@ export class LoginService {
     private findAccountPort: FindAccountByEmailPort,
   ) {}
 
-  async login(email: string, password: string) {}
+  async login(command: LoginCommand) {}
 }
