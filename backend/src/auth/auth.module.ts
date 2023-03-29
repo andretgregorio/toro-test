@@ -10,6 +10,7 @@ import { AccountTable } from './adapters/persistance/tables/account-table';
 import { FindAccountService } from './adapters/persistance/find-account.service';
 import { FindAccountByEmailPortToken } from './applications/ports/out/find-account-by-email';
 import { JwtService } from './applications/services/jwt.service';
+import { LoginService } from './applications/login.service';
 
 @Module({
   providers: [
@@ -19,6 +20,7 @@ import { JwtService } from './applications/services/jwt.service';
     { provide: SaveAccountPortToken, useClass: SaveAccountRepository },
     { provide: FindAccountByEmailPortToken, useClass: FindAccountService },
     JwtService,
+    LoginService,
   ],
   controllers: [CreateAccountController],
   imports: [
