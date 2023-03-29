@@ -59,6 +59,18 @@ describe('CreateAccountService', () => {
       const mockHashedPassword = 'hashedPassword';
       const jwtoken = 'jwtoken';
 
+      const command = new CreateAccountCommandFixture()
+        .withPassword('Test1234!')
+        .build();
+
+      const createdAccount = new Account({
+        id: 1,
+        email: command.email,
+        password: mockHashedPassword,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+
       beforeEach(() => {
         jest.spyOn(validationService, 'validate').mockReturnValue(true);
 
@@ -66,31 +78,27 @@ describe('CreateAccountService', () => {
           .spyOn(hashService, 'generateHash')
           .mockResolvedValue(mockHashedPassword);
 
-        jest.spyOn(jwtService, 'createToken').mockReturnValue(jwtoken);
-      });
-
-      it('should create an account', async () => {
-        const command = new CreateAccountCommandFixture()
-          .withPassword('Test1234!')
-          .build();
-
-        const createdAccount = new Account({
-          id: 1,
-          email: command.email,
-          password: mockHashedPassword,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        });
-
         jest
           .spyOn(mockSaveAccountPort, 'saveAccount')
           .mockResolvedValue(createdAccount);
 
-        const [account, accessToken] = (await service.createAccount(
+        jest.spyOn(jwtService, 'createToken').mockReturnValue(jwtoken);
+      });
+
+      it('should return the created account', async () => {
+        const [account] = (await service.createAccount(command)) as Tuple<
+          Account,
+          string
+        >;
+
+        expect(account).toStrictEqual(createdAccount);
+      });
+
+      it('should returned the created access token', async () => {
+        const [_, accessToken] = (await service.createAccount(
           command,
         )) as Tuple<Account, string>;
 
-        expect(account).toStrictEqual(createdAccount);
         expect(accessToken).toBe(jwtoken);
       });
     });

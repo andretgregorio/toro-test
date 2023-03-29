@@ -5,6 +5,7 @@ import * as jwt from 'jsonwebtoken';
 export class JwtService {
   createToken(accountId: number, email: string): string {
     const token = jwt.sign({ accountId, email }, 'my_super_secret');
+
     return token;
   }
 }

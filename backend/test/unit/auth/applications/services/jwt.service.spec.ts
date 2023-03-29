@@ -19,6 +19,9 @@ describe('JwtService', () => {
     const createdToken = '1234abcd';
 
     beforeEach(() => {
+      // @ts-expect-error: The JWT library has three overloads for the sign function.
+      // One of them returns a string, but the other two are void. Typescript is
+      // throwing a type error because it doesn't know which overload is being used.
       jest.spyOn(jwt, 'sign').mockReturnValue(createdToken);
     });
 

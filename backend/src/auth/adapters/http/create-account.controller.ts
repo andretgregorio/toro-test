@@ -29,6 +29,6 @@ export class CreateAccountController {
 
     const response = new AccountJsonResponse(account);
 
-    return { account: response };
+    return { account: response, accessToken };
   }
 }
