@@ -10,3 +10,7 @@ stop:
 db-migrate:
 	docker cp  ./scripts/database/01_create_auth_database.sql  toro_postgres:/tmp
 	docker exec  toro_postgres psql -U postgres -f /tmp/01_create_auth_database.sql
+
+.PHONY: test-backend
+test-backend:
+	docker exec toro_backend npm run test -- --coverage
