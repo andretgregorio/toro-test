@@ -1,19 +1,33 @@
 version: "3.8"
 
 services:
+  frontend:
+    container_name: toro_frontend
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    user: $USER
+    command: npm run dev
+    ports:
+      - 80:3000
+    volumes:
+      - ./frontend:/app
+    depends_on:
+      - backend
+
   backend:
-      container_name: toro_backend
-      build:
-        context: ./backend
-        dockerfile: Dockerfile
-      user: $USER
-      command: npm run start:dev
-      ports:
-        - 3000:3000
-      volumes:
-        - ./backend:/app
-      depends_on:
-        - postgres
+    container_name: toro_backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    user: $USER
+    command: npm run start:dev
+    ports:
+      - 3000:3000
+    volumes:
+      - ./backend:/app
+    depends_on:
+      - postgres
 
   postgres:
     image: postgres:15
