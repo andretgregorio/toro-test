@@ -1,5 +1,6 @@
-import { AppBar, Box } from '@mui/material';
 import Head from 'next/head';
+import { Layout } from '@/shared/layout';
+import { Box, Typography, Container } from '@mui/material';
 
 export default function Home() {
   return (
@@ -11,12 +12,22 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <Box>
-          <AppBar position="static">
-            <h1>My App</h1>
-          </AppBar>
-        </Box>
-        <h1>Hello world!</h1>
+        <Layout>
+          <Container>
+            <Box
+              display="flex"
+              flexDirection="column"
+              alignItems="center"
+              justifyContent="center"
+              mt={10}
+            >
+              <Typography variant="h1" align="center">
+                Welcome to Toro!
+              </Typography>
+              <Typography>Please login to access your account.</Typography>
+            </Box>
+          </Container>
+        </Layout>
       </main>
     </>
   );

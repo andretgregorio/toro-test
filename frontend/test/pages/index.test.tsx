@@ -2,11 +2,11 @@ import { render, screen } from '@testing-library/react';
 import Home from '@/pages';
 
 describe('Index page', () => {
-  it('works', () => {
+  it('should show the welcome message', () => {
     render(<Home />);
 
-    const someText = screen.getByText(/hello world!/i);
+    const welcomeText = screen.getByText(/^(welcome to toro)/i);
 
-    expect(someText).toBeVisible();
+    expect(welcomeText).toBeVisible();
   });
 });
