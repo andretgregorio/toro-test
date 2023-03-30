@@ -1,3 +1,4 @@
+import { AppBar, Box } from '@mui/material';
 import Head from 'next/head';
 
 export default function Home() {
@@ -10,6 +11,11 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
+        <Box>
+          <AppBar position="static">
+            <h1>My App</h1>
+          </AppBar>
+        </Box>
         <h1>Hello world!</h1>
       </main>
     </>
