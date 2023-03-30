@@ -9,4 +9,13 @@ export const theme = createTheme({
   typography: {
     fontFamily: 'roboto, sans-serif',
   },
+  components: {
+    MuiAppBar: {
+      styleOverrides: {
+        root: () => ({
+          boxShadow: 'none',
+        }),
+      },
+    },
+  },
 });

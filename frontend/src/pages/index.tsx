@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { Layout } from '@/shared/layout';
+import Layout from '@/shared/layout';
 import { Box, Typography, Container } from '@mui/material';
 
 export default function Home() {

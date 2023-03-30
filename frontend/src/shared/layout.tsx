@@ -1,12 +1,10 @@
-import { AppBar } from '@mui/material';
 import { PropsWithChildren } from 'react';
+import NavBar from './NavBar';
 
-export function Layout({ children }: PropsWithChildren) {
+export default function Layout({ children }: PropsWithChildren) {
   return (
     <>
-      <AppBar position="static" color="transparent">
-        <h1>Toro Secure</h1>
-      </AppBar>
+      <NavBar />
       {children}
     </>
   );
