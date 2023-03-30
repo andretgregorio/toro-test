@@ -5,7 +5,7 @@ describe('Index page', () => {
   it('works', () => {
     render(<Home />);
 
-    const someText = screen.getByText(/Get started by editing/i);
+    const someText = screen.getByText(/hello world!/i);
 
     expect(someText).toBeVisible();
   });
