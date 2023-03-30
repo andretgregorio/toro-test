@@ -12,6 +12,7 @@ import { FindAccountByEmailPortToken } from './applications/ports/out/find-accou
 import { JwtService } from './applications/services/jwt.service';
 import { LoginService } from './applications/login.service';
 import { LoginController } from './adapters/http/login.controller';
+import { AccountBalanceController } from './adapters/http/account-balance.controller';
 
 @Module({
   providers: [
@@ -23,7 +24,7 @@ import { LoginController } from './adapters/http/login.controller';
     JwtService,
     LoginService,
   ],
-  controllers: [CreateAccountController, LoginController],
+  controllers: [CreateAccountController, LoginController, AccountBalanceController],
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',

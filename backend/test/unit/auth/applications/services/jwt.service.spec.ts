@@ -47,18 +47,56 @@ describe('JwtService', () => {
   });
 
   describe('#verifyToken', () => {
-    it('returns the result of the jsonwebtoken "verify" function', async () => {
+    describe('when the token is valid', () => {
       const token = '1234abcd';
       const decodedToken = 'decodedToken';
 
-      // @ts-expect-error: The JWT library has three overloads for the sign function.
-      // One of them returns a string, but the other two are void. Typescript is
-      // throwing a type error because it doesn't know which overload is being used.
-      jest.spyOn(jwt, 'verify').mockReturnValue(decodedToken);
+      beforeEach(() => {
+        // @ts-expect-error: The JWT library has three overloads for the sign function.
+        // One of them returns a string, but the other two are void. Typescript is
+        // throwing a type error because it doesn't know which overload is being used.
+        jest.spyOn(jwt, 'verify').mockReturnValue(decodedToken);
+      });
 
-      const result = service.verifyToken(token);
+      it('returns the result of the jsonwebtoken "verify" function', async () => {
+        const result = service.verifyToken(token);
 
-      expect(result).toEqual(decodedToken);
+        expect(result).toEqual(decodedToken);
+      });
+    });
+
+    describe('should return null', () => {
+      const token = '1234abcd';
+
+      it('when the token is invalid formatted', () => {
+        jest.spyOn(jwt, 'verify').mockImplementation(() => {
+          throw new SyntaxError();
+        });
+
+        const result = service.verifyToken(token);
+
+        expect(result).toBeNull();
+      });
+
+      it('when the token was not signed by us', () => {
+        jest.spyOn(jwt, 'verify').mockImplementation(() => {
+          throw new jwt.JsonWebTokenError('');
+        });
+
+        const result = service.verifyToken(token);
+
+        expect(result).toBeNull();
+      });
+
+      it('when the token is expired', () => {
+        jest.spyOn(jwt, 'verify').mockImplementation(() => {
+          throw new jwt.TokenExpiredError('', new Date());
+        });
+
+        const result = service.verifyToken(token);
+
+        expect(result).toBeNull();
+      });
     });
   });
 });

@@ -15,11 +15,11 @@ export class InspectJwtGuard implements CanActivate {
     context: ExecutionContext,
   ): boolean | Promise<boolean> | Observable<boolean> {
     const request = context.switchToHttp().getRequest();
-    const token = this.extractTokenFromHeader(request);
+    const [tokenType, token] = this.extractTokenFromHeader(request);
 
     if (!token) throw new UnauthorizedException('No token provided');
 
-    if (this.notBearerToken(token))
+    if (this.notBearerToken(tokenType))
       throw new UnauthorizedException('Invalid token');
 
     const decodedToken = this.jwtService.verifyToken(token);
@@ -32,11 +32,11 @@ export class InspectJwtGuard implements CanActivate {
     return true;
   }
 
-  private extractTokenFromHeader(request) {
-    return request.headers.authorization;
+  private extractTokenFromHeader(request): [string, string] {
+    return request.headers.authorization?.split(' ') || [];
   }
 
-  private notBearerToken(token: string) {
-    return !token.startsWith('Bearer ');
+  private notBearerToken(tokenType: string) {
+    return tokenType !== 'Bearer';
   }
 }

@@ -15,8 +15,15 @@ export class JwtService {
   }
 
   verifyToken(token: string): string | object {
-    const verificationResult = jwt.verify(token, JWT_SECRET);
+    try {
+      const verificationResult = jwt.verify(token, JWT_SECRET);
 
-    return verificationResult;
+      return verificationResult;
+    } catch (error) {
+      if (error instanceof SyntaxError) return null;
+      else if (error instanceof jwt.JsonWebTokenError) return null;
+      else if (error instanceof jwt.TokenExpiredError) return null;
+      throw error;
+    }
   }
 }
