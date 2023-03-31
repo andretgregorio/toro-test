@@ -1,8 +1,14 @@
 import { Box, Button, TextField } from '@mui/material';
 import { useLoginForm } from './useLoginForm';
+import { loginRequest } from '@/auth/adapters/http/login-request';
 
 export default function LoginForm() {
   const form = useLoginForm();
+
+  const attemptLogin = async () => {
+    const response = await loginRequest(form.email, form.password);
+    console.log(response);
+  };
 
   return (
     <Box
@@ -11,6 +17,7 @@ export default function LoginForm() {
       display="flex"
       flexDirection="column"
       mt={4}
+      onSubmit={(e) => e.preventDefault()}
     >
       <Box mt={2} width="100%">
         <TextField
@@ -55,6 +62,7 @@ export default function LoginForm() {
           variant="contained"
           fullWidth
           disabled={form.isInvalid()}
+          onClick={attemptLogin}
         >
           Entrar
         </Button>
