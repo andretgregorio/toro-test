@@ -1,9 +1,7 @@
 import { BusinessError } from './business-error';
 
-export class LoginError implements BusinessError {
-  readonly message: string;
-
+export class LoginError extends BusinessError {
   constructor() {
-    this.message = 'Invalid email or password';
+    super('Invalid email or password');
   }
 }

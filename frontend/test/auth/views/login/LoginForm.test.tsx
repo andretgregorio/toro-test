@@ -2,6 +2,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import LoginForm from '@/auth/views/login/LoginForm';
 import * as login from '@/auth/adapters/http/login-request';
+import { LoginError } from '@/auth/domain/login-error';
 
 describe('LoginForm', () => {
   const email = 'test@email.com';
@@ -76,6 +77,7 @@ describe('LoginForm', () => {
 
   describe('when user clicks on submit button', () => {
     it('calls the loginRequest function', async () => {
+      // @ts-expect-error: We don't need a perfect typed mock
       vi.spyOn(login, 'loginRequest').mockResolvedValue({});
 
       render(<LoginForm />);
@@ -90,6 +92,26 @@ describe('LoginForm', () => {
       await userEvent.click(submitButton);
 
       expect(login.loginRequest).toHaveBeenCalledWith(email, password);
+    });
+
+    it('shows a snackbar with error message when there is an error', async () => {
+      const error = new LoginError();
+      vi.spyOn(login, 'loginRequest').mockResolvedValue(error);
+
+      render(<LoginForm />);
+
+      const emailInput = screen.getByRole('textbox', { name: /email/i });
+      const passwordInput = screen.getByLabelText(/password/i);
+      const submitButton = screen.getByRole('button', { name: /entrar/i });
+
+      await userEvent.type(emailInput, email);
+      await userEvent.type(passwordInput, password);
+
+      await userEvent.click(submitButton);
+
+      const errorMessage = await screen.findByText(error.message);
+
+      expect(errorMessage).toBeVisible();
     });
   });
 });
