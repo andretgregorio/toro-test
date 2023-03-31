@@ -1,6 +1,6 @@
 import { Box, Button, TextField } from '@mui/material';
 import { useLoginForm } from './useLoginForm';
-import { loginRequest } from '@/auth/adapters/http/login-request';
+import { loginRequest } from '@/auth/infra/http/login-request';
 import { BusinessError } from '@/auth/domain/business-error';
 import LoginErrorMessage from './LoginErrorMessage';
 

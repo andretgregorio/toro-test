@@ -1,4 +1,4 @@
-import { loginRequest } from '@/auth/adapters/http/login-request';
+import { loginRequest } from '@/auth/infra/http/login-request';
 import { AccessToken } from '@/auth/domain/access-token';
 import { StoredAccount } from '@/auth/domain/account';
 import { LoginError } from '@/auth/domain/login-error';

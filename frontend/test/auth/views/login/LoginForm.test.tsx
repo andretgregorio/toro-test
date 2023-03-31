@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import LoginForm from '@/auth/views/login/LoginForm';
-import * as login from '@/auth/adapters/http/login-request';
+import * as login from '@/auth/infra/http/login-request';
 import { LoginError } from '@/auth/domain/login-error';
 
 describe('LoginForm', () => {
