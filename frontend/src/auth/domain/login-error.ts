@@ -1,4 +1,6 @@
-export class LoginError {
+import { BusinessError } from './business-error';
+
+export class LoginError implements BusinessError {
   readonly message: string;
 
   constructor() {

@@ -1,4 +1,6 @@
 import { loginRequest } from '@/auth/adapters/http/login-request';
+import { AccessToken } from '@/auth/domain/access-token';
+import { StoredAccount } from '@/auth/domain/account';
 import { LoginError } from '@/auth/domain/login-error';
 import { UnknownError } from '@/auth/domain/unknown-error';
 import { request } from '@/shared/http/request';
@@ -22,14 +24,21 @@ describe('loginRequest', () => {
   });
 
   describe('when the request is successful and has a 2xx status code', () => {
-    it('should return the response from request.post', async () => {
-      const response = { foo: 'bar' };
+    it('should return an Account and an  AccessToken', async () => {
+      const response = {
+        account: { id: 1, email: 'test@gmail.com' },
+        accessToken: 'token',
+      };
 
       vi.spyOn(request, 'post').mockResolvedValueOnce(response);
 
-      const result = await loginRequest('foo', 'bar');
+      const [account, accessToken] = (await loginRequest(
+        'foo',
+        'bar'
+      )) as Tuple<StoredAccount, AccessToken>;
 
-      expect(result).toStrictEqual(response);
+      expect(account).toStrictEqual(response.account);
+      expect(accessToken).toStrictEqual(response.accessToken);
     });
   });
 
