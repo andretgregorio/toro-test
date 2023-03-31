@@ -50,7 +50,12 @@ export default function LoginForm() {
       </Box>
 
       <Box mt={6} width="100%">
-        <Button type="submit" variant="contained" fullWidth>
+        <Button
+          type="submit"
+          variant="contained"
+          fullWidth
+          disabled={form.isInvalid()}
+        >
           Entrar
         </Button>
       </Box>
