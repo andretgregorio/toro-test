@@ -2,6 +2,12 @@ import { render, screen } from '@testing-library/react';
 import NavBar from '@/shared/components/navbar/NavBar';
 import * as authHook from '@/auth/views/useAuth';
 
+vi.mock('next/router', () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+  }),
+}));
+
 const renderNavBar = () => render(<NavBar />);
 
 describe('NavBar', () => {

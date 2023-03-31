@@ -11,8 +11,12 @@ async function get<T>(
     const response = await axios.get<T>(`${BASE_URL}/${path}`, config);
     return response.data;
   } catch (e) {
-    console.log(e);
     if (e instanceof AxiosError) {
+      // This has  a really bad smell. It's already hard to understand the construction of the RequestError.
+      // This is happening because the backend has two different formats for error responses:
+      // One provided by NestJS, and one custom provided by me, when there is an error during a service execution.
+      // Ideally I would have only one error model returning from the backend.
+      // And since I'm building this RequestError in more than one place, maybe a Factory or a constructor could help.
       return new RequestError(
         e.response?.data.message
           ? e.response?.data.message[0]
@@ -40,7 +44,6 @@ async function post<P, R>(
     return response.data;
   } catch (e) {
     if (e instanceof AxiosError) {
-      console.log(e);
       return new RequestError(
         e.response?.data.message
           ? e.response?.data.message[0]
