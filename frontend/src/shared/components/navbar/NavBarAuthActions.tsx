@@ -21,9 +21,11 @@ export function NavBarAuthActions() {
           Login
         </Button>
       </Link>
-      <Button variant="outlined" color="primary">
-        Create your account
-      </Button>
+      <Link href="signup">
+        <Button variant="outlined" color="primary">
+          Create your account
+        </Button>
+      </Link>
     </Box>
   );
 }

@@ -29,7 +29,7 @@ describe('Request', () => {
 
     describe('when the request fails due to a status >= 400', () => {
       const mockAxiosResponse: Partial<AxiosResponse> = {
-        data: { message: 'invalid_data' },
+        data: { error: 'invalid_data' },
         status: 400,
         statusText: 'Bad Request',
         headers: {},
@@ -52,7 +52,7 @@ describe('Request', () => {
         );
 
         expect(await request.get('/foo')).toStrictEqual(
-          new RequestError('invalid_data', 400, { message: 'invalid_data' })
+          new RequestError('invalid_data', 400, { error: 'invalid_data' })
         );
       });
     });
@@ -90,7 +90,7 @@ describe('Request', () => {
 
     describe('when the request fails due to a status >= 400', () => {
       const mockAxiosResponse: Partial<AxiosResponse> = {
-        data: { message: 'invalid_data' },
+        data: { error: 'invalid_data' },
         status: 400,
         statusText: 'Bad Request',
         headers: {},
@@ -113,7 +113,7 @@ describe('Request', () => {
         );
 
         expect(await request.post('/foo', {})).toStrictEqual(
-          new RequestError('invalid_data', 400, { message: 'invalid_data' })
+          new RequestError('invalid_data', 400, { error: 'invalid_data' })
         );
       });
     });

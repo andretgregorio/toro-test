@@ -11,9 +11,12 @@ async function get<T>(
     const response = await axios.get<T>(`${BASE_URL}/${path}`, config);
     return response.data;
   } catch (e) {
+    console.log(e);
     if (e instanceof AxiosError) {
       return new RequestError(
-        e.message,
+        e.response?.data.message
+          ? e.response?.data.message[0]
+          : e.response?.data.error,
         e.response?.status || -1,
         e.response?.data
       );
@@ -37,8 +40,11 @@ async function post<P, R>(
     return response.data;
   } catch (e) {
     if (e instanceof AxiosError) {
+      console.log(e);
       return new RequestError(
-        e.message,
+        e.response?.data.message
+          ? e.response?.data.message[0]
+          : e.response?.data.error,
         e.response?.status || -1,
         e.response?.data
       );
