@@ -20,7 +20,7 @@ export async function loginRequest(
   email: string,
   password: string
 ): Promise<BusinessErrorOr<Tuple<StoredAccount, AccessToken>>> {
-  const path = '/auth/v1/login';
+  const path = 'auth/v1/login';
   const payload = { email, password };
 
   const response = await request.post<typeof payload, ResponsePayload>(

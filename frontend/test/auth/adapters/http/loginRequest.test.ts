@@ -7,7 +7,7 @@ import { request } from '@/shared/http/request';
 import { RequestError } from '@/shared/http/request-error';
 
 describe('loginRequest', () => {
-  const loginPath = '/auth/v1/login';
+  const loginPath = 'auth/v1/login';
 
   it('should call request.post with the correct path and payload', async () => {
     vi.spyOn(request, 'post').mockResolvedValueOnce({});
