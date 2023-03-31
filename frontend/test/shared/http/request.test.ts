@@ -56,4 +56,60 @@ describe('Request', () => {
       });
     });
   });
+
+  describe('#post', () => {
+    it('calls axios.post with the given path and payload', async () => {
+      const path = '/foo';
+      const payload = { foo: 'bar' };
+      const config = { headers: { 'Content-Type': 'application/json' } };
+
+      vi.spyOn(axios, 'post').mockResolvedValueOnce({ data: {} });
+
+      await request.post(path, payload, config);
+
+      expect(axios.post).toHaveBeenNthCalledWith(1, path, payload, config);
+    });
+
+    describe('when the request is successful and has a 2xx status code', () => {
+      it('returns the response data', async () => {
+        const response = { foo: 'bar' };
+
+        vi.spyOn(axios, 'post').mockResolvedValueOnce({ data: response });
+
+        const result = await request.post('/foo', {});
+
+        expect(result).toStrictEqual(response);
+      });
+    });
+
+    describe('when the request fails due to a status >= 400', () => {
+      const mockAxiosResponse: Partial<AxiosResponse> = {
+        data: { message: 'invalid_data' },
+        status: 400,
+        statusText: 'Bad Request',
+        headers: {},
+        // @ts-expect-error: This is a mock object, so we don't need to provide all the properties.
+        config: {},
+      };
+
+      test('returns a request error with data about the error', async () => {
+        vi.spyOn(axios, 'post').mockImplementationOnce(() =>
+          Promise.reject(
+            new AxiosError(
+              'invalid_data',
+              '400',
+              undefined,
+              {},
+              // @ts-expect-error: This is a mock object, so we don't need to provide all the properties.
+              mockAxiosResponse
+            )
+          )
+        );
+
+        expect(await request.post('/foo', {})).toStrictEqual(
+          new RequestError('invalid_data', 400, { message: 'invalid_data' })
+        );
+      });
+    });
+  });
 });
