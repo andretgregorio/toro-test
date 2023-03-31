@@ -11,8 +11,6 @@ export async function createAccountService(email: string, password: string) {
 
   const [account, accessToken] = responseOrError;
 
-  console.log(accessToken);
-
   saveAccessToken(accessToken);
 
   return account;
