@@ -3,7 +3,6 @@ import userEvent from '@testing-library/user-event';
 import LoginForm from '@/auth/views/login/LoginForm';
 import * as service from '@/auth/services/login-service';
 import { LoginError } from '@/auth/domain/login-error';
-import * as nextRouter from 'next/router';
 
 vi.mock('next/router', () => ({
   useRouter: () => ({

@@ -12,7 +12,7 @@ describe('Request', () => {
 
       await request.get(path);
 
-      expect(axios.get).toHaveBeenNthCalledWith(1, `${BASE_URL}/${path}`);
+      expect(axios.get).toHaveBeenNthCalledWith(1, `${BASE_URL}/${path}`, {});
     });
 
     describe('when the request is successful and has a 2xx status code', () => {

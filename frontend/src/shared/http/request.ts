@@ -3,9 +3,12 @@ import { RequestError } from './request-error';
 import { RequestConfig } from './request-config';
 import { BASE_URL } from './request-constants';
 
-async function get<T>(path: string): Promise<T | RequestError> {
+async function get<T>(
+  path: string,
+  config: RequestConfig = {}
+): Promise<T | RequestError> {
   try {
-    const response = await axios.get<T>(`${BASE_URL}/${path}`);
+    const response = await axios.get<T>(`${BASE_URL}/${path}`, config);
     return response.data;
   } catch (e) {
     if (e instanceof AxiosError) {

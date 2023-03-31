@@ -1,6 +1,3 @@
-'use client';
-
-import { useContext } from 'react';
 import { PermIdentity } from '@mui/icons-material';
 import { Box, Button } from '@mui/material';
 import Link from 'next/link';

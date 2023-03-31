@@ -13,3 +13,9 @@ export function getAccessToken(): string | null {
 
   return null;
 }
+
+export function removeAccessToken(): void {
+  if (typeof window !== 'undefined') {
+    window.sessionStorage.removeItem(ACCESS_TOKEN_KEY);
+  }
+}
