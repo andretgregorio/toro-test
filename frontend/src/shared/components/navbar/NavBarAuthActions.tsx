@@ -2,9 +2,12 @@ import { useContext } from 'react';
 import { PermIdentity } from '@mui/icons-material';
 import { Box, Button } from '@mui/material';
 import Link from 'next/link';
+import { useAuth } from '@/auth/views/useAuth';
 
 export function NavBarAuthActions() {
-  if (false) {
+  const isLoggedIn = useAuth();
+
+  if (isLoggedIn) {
     return (
       <Button variant="text" color="primary">
         Logout

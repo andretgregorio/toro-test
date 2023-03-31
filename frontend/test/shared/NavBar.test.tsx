@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import NavBar from '@/shared/components/navbar/NavBar';
+import * as authHook from '@/auth/views/useAuth';
 
-const renderNavBar = (authenticationState = false) => render(<NavBar />);
+const renderNavBar = () => render(<NavBar />);
 
 describe('NavBar', () => {
   describe('when the user is not authenticated', () => {
@@ -26,7 +27,9 @@ describe('NavBar', () => {
 
   describe('when the user is authenticated', () => {
     it('should show the "logout" button', () => {
-      renderNavBar(true);
+      vi.spyOn(authHook, 'useAuth').mockReturnValue(true);
+
+      renderNavBar();
 
       const logoutButton = screen.getByRole('button', { name: /logout/i });
 
