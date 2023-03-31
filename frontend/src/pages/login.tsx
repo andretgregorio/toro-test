@@ -2,6 +2,7 @@ import { Box, Container, Typography } from '@mui/material';
 import Layout from '@/shared/layout';
 import Head from 'next/head';
 import LoginBox from '@/auth/views/login/LoginBox';
+import LoginForm from '@/auth/views/login/LoginForm';
 
 export default function LoginPage() {
   return (
@@ -15,6 +16,7 @@ export default function LoginPage() {
             <Box maxWidth={422} width="100%" mx="auto" mt={20}>
               <LoginBox>
                 <Typography variant="h5">Acesse sua conta Toro</Typography>
+                <LoginForm />
               </LoginBox>
             </Box>
           </Box>
