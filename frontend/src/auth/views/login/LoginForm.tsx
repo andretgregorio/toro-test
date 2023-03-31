@@ -4,9 +4,11 @@ import { loginRequest } from '@/auth/infra/http/login-request';
 import { BusinessError } from '@/auth/domain/business-error';
 import LoginErrorMessage from './LoginErrorMessage';
 import { loginService } from '@/auth/services/login-service';
+import { useRouter } from 'next/router';
 
 export default function LoginForm() {
   const form = useLoginForm();
+  const router = useRouter();
 
   const attemptLogin = async () => {
     const response = await loginService(form.email, form.password);
@@ -14,6 +16,8 @@ export default function LoginForm() {
     if (response instanceof BusinessError) {
       form.setErrorMessage(response.message);
     }
+
+    router.push('/wallet');
   };
 
   return (

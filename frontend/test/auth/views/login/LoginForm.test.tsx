@@ -3,10 +3,19 @@ import userEvent from '@testing-library/user-event';
 import LoginForm from '@/auth/views/login/LoginForm';
 import * as service from '@/auth/services/login-service';
 import { LoginError } from '@/auth/domain/login-error';
+import * as nextRouter from 'next/router';
+
+vi.mock('next/router', () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+  }),
+}));
 
 describe('LoginForm', () => {
   const email = 'test@email.com';
   const password = 'secretPassword1234';
+
+  beforeEach(() => {});
 
   describe('first render', () => {
     it('should have no email input value', () => {

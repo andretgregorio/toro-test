@@ -1,7 +1,15 @@
+const ACCESS_TOKEN_KEY = 'accessToken';
+
 export function saveAccessToken(accessToken: string): void {
-  sessionStorage.setItem('accessToken', accessToken);
+  if (typeof window !== 'undefined') {
+    window.sessionStorage.setItem(ACCESS_TOKEN_KEY, accessToken);
+  }
 }
 
 export function getAccessToken(): string | null {
-  return sessionStorage.getItem('accessToken');
+  if (typeof window !== 'undefined') {
+    return window.sessionStorage.getItem(ACCESS_TOKEN_KEY);
+  }
+
+  return null;
 }
