@@ -1,6 +1,9 @@
 import { Box, Button, TextField } from '@mui/material';
+import { useLoginForm } from './useLoginForm';
 
 export default function LoginForm() {
+  const form = useLoginForm();
+
   return (
     <Box
       component="form"
@@ -20,6 +23,10 @@ export default function LoginForm() {
           InputLabelProps={{
             shrink: true,
           }}
+          value={form.email}
+          onChange={(event) => {
+            form.setEmail(event.target.value);
+          }}
         />
       </Box>
 
@@ -34,6 +41,10 @@ export default function LoginForm() {
           fullWidth
           InputLabelProps={{
             shrink: true,
+          }}
+          value={form.password}
+          onChange={(event) => {
+            form.setPassword(event.target.value);
           }}
         />
       </Box>
