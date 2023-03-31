@@ -3,12 +3,13 @@ import { useLoginForm } from './useLoginForm';
 import { loginRequest } from '@/auth/infra/http/login-request';
 import { BusinessError } from '@/auth/domain/business-error';
 import LoginErrorMessage from './LoginErrorMessage';
+import { loginService } from '@/auth/services/login-service';
 
 export default function LoginForm() {
   const form = useLoginForm();
 
   const attemptLogin = async () => {
-    const response = await loginRequest(form.email, form.password);
+    const response = await loginService(form.email, form.password);
 
     if (response instanceof BusinessError) {
       form.setErrorMessage(response.message);

@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import LoginForm from '@/auth/views/login/LoginForm';
-import * as login from '@/auth/infra/http/login-request';
+import * as service from '@/auth/services/login-service';
 import { LoginError } from '@/auth/domain/login-error';
 
 describe('LoginForm', () => {
@@ -78,7 +78,7 @@ describe('LoginForm', () => {
   describe('when user clicks on submit button', () => {
     it('calls the loginRequest function', async () => {
       // @ts-expect-error: We don't need a perfect typed mock
-      vi.spyOn(login, 'loginRequest').mockResolvedValue({});
+      vi.spyOn(service, 'loginService').mockResolvedValue({});
 
       render(<LoginForm />);
 
@@ -91,12 +91,12 @@ describe('LoginForm', () => {
 
       await userEvent.click(submitButton);
 
-      expect(login.loginRequest).toHaveBeenCalledWith(email, password);
+      expect(service.loginService).toHaveBeenCalledWith(email, password);
     });
 
     it('shows a snackbar with error message when there is an error', async () => {
       const error = new LoginError();
-      vi.spyOn(login, 'loginRequest').mockResolvedValue(error);
+      vi.spyOn(service, 'loginService').mockResolvedValue(error);
 
       render(<LoginForm />);
 
