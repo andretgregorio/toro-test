@@ -1,8 +1,16 @@
 import { render, screen } from '@testing-library/react';
 import NavBar from '@/shared/NavBar';
+import { AuthProvider } from '@/auth/state/AuthContext';
+
+const renderNavBar = (authenticationState = false) =>
+  render(
+    <AuthProvider initialIsLoggedIn={true}>
+      <NavBar />
+    </AuthProvider>
+  );
 
 describe('NavBar', () => {
-  describe('when the user is not autenticated', () => {
+  describe('when the user is not authenticated', () => {
     it('should show  the  login  button', () => {
       render(<NavBar />);
 
@@ -19,6 +27,16 @@ describe('NavBar', () => {
       });
 
       expect(createAccountButton).toBeVisible();
+    });
+  });
+
+  describe('when the user is authenticated', () => {
+    it('should show the "logout" button', () => {
+      renderNavBar(true);
+
+      const logoutButton = screen.getByRole('button', { name: /logout/i });
+
+      expect(logoutButton).toBeVisible();
     });
   });
 });

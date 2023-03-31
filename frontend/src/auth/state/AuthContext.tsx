@@ -5,10 +5,17 @@ interface AuthContextType {
   setIsLoggedIn: (isLoggedIn: boolean) => void;
 }
 
+interface AuthProviderProps {
+  initialIsLoggedIn?: boolean;
+}
+
 const AuthContext = createContext<AuthContextType>({} as AuthContextType);
 
-export const AuthProvider = ({ children }: PropsWithChildren) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+export const AuthProvider = ({
+  children,
+  initialIsLoggedIn = false,
+}: PropsWithChildren<AuthProviderProps>) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(initialIsLoggedIn);
 
   return (
     <AuthContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>

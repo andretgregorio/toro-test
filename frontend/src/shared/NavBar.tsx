@@ -1,5 +1,5 @@
-import { AppBar, Box, Button, Container, Typography } from '@mui/material';
-import { PermIdentity } from '@mui/icons-material';
+import { AppBar, Box, Container, Typography } from '@mui/material';
+import { NavBarAuthActions } from './NavBarAuthActions';
 
 export default function NavBar() {
   return (
@@ -10,14 +10,7 @@ export default function NavBar() {
             TORO
           </Typography>
 
-          <Box display="flex" alignItems="center">
-            <Button variant="text" color="primary" startIcon={<PermIdentity />}>
-              Login
-            </Button>
-            <Button variant="outlined" color="primary">
-              Create your account
-            </Button>
-          </Box>
+          <NavBarAuthActions />
         </Box>
       </Container>
     </AppBar>
