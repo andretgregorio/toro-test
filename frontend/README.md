@@ -1,38 +1,28 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Toro Test Frontend
+Here you will find more details about the frontend application.
 
-## Getting Started
+## Technologies
+This app is built with NextJS.
 
-First, run the development server:
+To handle the authentication, I'm storing the JWT in the session storage of the browser and retrieving it whenever I need to make an API Requested to a protected resource. If the protected route rejects my request due to authentication reasons, I'll delete the JWT from the session storage and redirect the user to the home page. This is what I could achieve in the timebox provided.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+## Design Decisions
+The app implements a modularized approach, where each module is independent from the others. The `auth` module implements the features related to auth, such as account creations, login and logout. The `wallet` module is just a tiny one, created only to display one authenticated page.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Inside **src** you will find the following modules:
+* auth: holds all functionalities related to authentication.
+* pages: this is nextjs requirement. Each page represents a route for the app.
+* shared: some code that can be shared across modules.
+* styles: the global style.
+* wallet: the functionalities for the wallet features.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+Inside a module package (such as auth and wallet) you will find the following structure:
+* domain: holds basic data models for the rest of this module to use. BusinessErrors and interfaces are all declared here. I believe this makes easier to model our domain and help to make our code more expressive.
+* infra: this has infrastructure setup, such as HTTP requests and access to browser storage.
+* services: provide the app functionality, orchestrating different infrastructure accesses and providing a clear data model for the views to work with.
+* views: the components and the state management for the components.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## Testing Strategy
+The app implements mostly unit tests (although in some tests more than one view components interacts with each other). I usually like to do the unit tests as I develop, in a TDD style, and use the pages to make an integrated tests. For integrated tests I usually use MSW to stub HTTP requests instead of mocking axios, fetch, or the lib I'm using to make the API calls. However, given the time constraints, I've opted to skip integration tests.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+I also didn't add E2E tests because of time constraint. Bu Cypress would be really handy to test the whole application (frontend, backend and database) working together.

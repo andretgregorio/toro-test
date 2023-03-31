@@ -1,3 +1,11 @@
+.PHONY: setup
+setup:
+	USER=$(id -u) docker compose up -d postgres
+
+	make db-migrate
+
+	make stop
+
 .PHONY: start
 start:
 	USER=$(id -u) docker compose up -d
@@ -14,3 +22,7 @@ db-migrate:
 .PHONY: test-backend
 test-backend:
 	docker exec toro_backend npm run test -- --coverage
+
+.PHONY: test-frontend
+test-frontend:
+	docker exec toro_frontend npm run test -- --run

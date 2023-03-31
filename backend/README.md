@@ -1,6 +1,11 @@
 # Toro Test Backend
 Here you will find more details about the backend application.
 
+## Frameworks
+The app is built with NestJS.
+
+To deal with passwords, hashings, JWTs, I've used bcrypt for hashing and jsonwebtoken for the JWT. I didn't use passport or nest/jwt just to go more "raw" on this test. For a production app I would not try to create my own auth system from zero and would probably use those tools (or other tools, like OAuth) to help with a faster development and a more secure solution.
+
 ## Design Decisions
 The idea behind this app is to organize it as a "module by feature". Each module should represent a specific domain, and be as independent as possible from other modules. This means that each module would have its own database and a clear boundary so that modules can communicate with each other.
 
