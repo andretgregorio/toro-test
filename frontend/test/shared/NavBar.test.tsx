@@ -1,13 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import NavBar from '@/shared/components/navbar/NavBar';
-import { AuthProvider } from '@/auth/state/AuthContext';
 
-const renderNavBar = (authenticationState = false) =>
-  render(
-    <AuthProvider initialIsLoggedIn={true}>
-      <NavBar />
-    </AuthProvider>
-  );
+const renderNavBar = (authenticationState = false) => render(<NavBar />);
 
 describe('NavBar', () => {
   describe('when the user is not authenticated', () => {
