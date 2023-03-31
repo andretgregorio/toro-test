@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import NavBar from '@/shared/NavBar';
+import NavBar from '@/shared/components/navbar/NavBar';
 import { AuthProvider } from '@/auth/state/AuthContext';
 
 const renderNavBar = (authenticationState = false) =>
