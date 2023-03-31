@@ -1,7 +1,13 @@
+import { useEffect, useState } from 'react';
 import { getAccessToken } from '../infra/browser-storage/acces-token';
 
 export function useAuth(): boolean {
-  const hasAccessToken = getAccessToken();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  return !!hasAccessToken;
+  useEffect(() => {
+    const hasAccessToken = getAccessToken();
+    setIsLoggedIn(!!hasAccessToken);
+  });
+
+  return isLoggedIn;
 }

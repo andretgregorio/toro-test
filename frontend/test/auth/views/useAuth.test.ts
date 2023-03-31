@@ -1,5 +1,6 @@
 import * as getAccessTokenStorage from '@/auth/infra/browser-storage/acces-token';
 import { useAuth } from '@/auth/views/useAuth';
+import { renderHook } from '@testing-library/react';
 
 describe('useAuth', () => {
   it('should return true if there is an access token', () => {
@@ -7,16 +8,16 @@ describe('useAuth', () => {
       'access-token'
     );
 
-    const isLoggedIn = useAuth();
+    const { result } = renderHook(() => useAuth());
 
-    expect(isLoggedIn).toBe(true);
+    expect(result.current).toBe(true);
   });
 
   it('should return false if there is no access token', () => {
     vi.spyOn(getAccessTokenStorage, 'getAccessToken').mockReturnValue(null);
 
-    const isLoggedIn = useAuth();
+    const { result } = renderHook(() => useAuth());
 
-    expect(isLoggedIn).toBe(false);
+    expect(result.current).toBe(false);
   });
 });

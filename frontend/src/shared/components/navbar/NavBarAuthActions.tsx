@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { useAuth } from '@/auth/views/useAuth';
 import { logoutService } from '@/auth/services/logout-service';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
+import { getAccessToken } from '@/auth/infra/browser-storage/acces-token';
 
 export function NavBarAuthActions() {
   const isLoggedIn = useAuth();
