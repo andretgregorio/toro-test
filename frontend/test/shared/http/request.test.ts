@@ -1,6 +1,7 @@
 import { request } from '@/shared/http/request';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { RequestError } from '@/shared/http/request-error';
+import { BASE_URL } from '@/shared/http/request-constants';
 
 describe('Request', () => {
   describe('#get', () => {
@@ -11,7 +12,7 @@ describe('Request', () => {
 
       await request.get(path);
 
-      expect(axios.get).toHaveBeenNthCalledWith(1, path);
+      expect(axios.get).toHaveBeenNthCalledWith(1, `${BASE_URL}/${path}`);
     });
 
     describe('when the request is successful and has a 2xx status code', () => {
@@ -67,7 +68,12 @@ describe('Request', () => {
 
       await request.post(path, payload, config);
 
-      expect(axios.post).toHaveBeenNthCalledWith(1, path, payload, config);
+      expect(axios.post).toHaveBeenNthCalledWith(
+        1,
+        `${BASE_URL}/${path}`,
+        payload,
+        config
+      );
     });
 
     describe('when the request is successful and has a 2xx status code', () => {

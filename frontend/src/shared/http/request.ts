@@ -1,10 +1,11 @@
 import axios, { AxiosError } from 'axios';
 import { RequestError } from './request-error';
 import { RequestConfig } from './request-config';
+import { BASE_URL } from './request-constants';
 
 async function get<T>(path: string): Promise<T | RequestError> {
   try {
-    const response = await axios.get<T>(path);
+    const response = await axios.get<T>(`${BASE_URL}/${path}`);
     return response.data;
   } catch (e) {
     if (e instanceof AxiosError) {
@@ -25,7 +26,11 @@ async function post<P, R>(
   config?: RequestConfig
 ): Promise<R | RequestError> {
   try {
-    const response = await axios.post<R>(path, payload, config);
+    const response = await axios.post<R>(
+      `${BASE_URL}/${path}`,
+      payload,
+      config
+    );
     return response.data;
   } catch (e) {
     if (e instanceof AxiosError) {
