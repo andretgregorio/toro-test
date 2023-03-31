@@ -7,14 +7,11 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import { ThemeProvider } from '@mui/material';
 import { theme } from '@/shared/configuration/mui-theme';
-import { AuthProvider } from '@/auth/state/AuthContext';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider theme={theme}>
-      <AuthProvider>
-        <Component {...pageProps} />
-      </AuthProvider>
+      <Component {...pageProps} />
     </ThemeProvider>
   );
 }
