@@ -12,10 +12,10 @@ In the next sessions, there is a C4 Diagram to give a broader vision about the a
 
 
 ### C1 - System Context
-__to do__
+![C1 - System Context](docs/C1-System-Context.jpg)
 
 ### C2 - Container Diagram.
-__to do__
+![C2 - Container Diagram](docs/C2-Container-Diagram.jpg)
 
 ### More about the backend and the front end.
 Inside each folder there is a specific README discussing design decision, testing strategies, and other things. You can navigate to them using those links:
