@@ -25,4 +25,6 @@ Inside a module package (such as auth and wallet) you will find the following st
 ## Testing Strategy
 The app implements mostly unit tests (although in some tests more than one view components interacts with each other). I usually like to do the unit tests as I develop, in a TDD style, and use the pages to make an integrated tests. For integrated tests I usually use MSW to stub HTTP requests instead of mocking axios, fetch, or the lib I'm using to make the API calls. However, given the time constraints, I've opted to skip integration tests.
 
-I also didn't add E2E tests because of time constraint. Bu Cypress would be really handy to test the whole application (frontend, backend and database) working together.
+Because of time constraints, the tests are mostly implemented in the `login` functionality. This was the first frontend functionality I have created, and it was done with unit testing. For the account creation and the authenticated route I ended up no creating tests. This is bad and it's something I don't do in a production environment. 
+
+I also didn't add E2E tests because of time constraint. Cypress would be really handy to test the whole application (frontend, backend and database) working together.

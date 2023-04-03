@@ -7,9 +7,13 @@ The app is built with NestJS.
 To deal with passwords, hashings, JWTs, I've used bcrypt for hashing and jsonwebtoken for the JWT. I didn't use passport or nest/jwt just to go more "raw" on this test. For a production app I would not try to create my own auth system from zero and would probably use those tools (or other tools, like OAuth) to help with a faster development and a more secure solution.
 
 ## Design Decisions
+
+### Guidelines
 The idea behind this app is to organize it as a "module by feature". Each module should represent a specific domain, and be as independent as possible from other modules. This means that each module would have its own database and a clear boundary so that modules can communicate with each other.
 
 Following this approach, you will find one folder inside the **src** folder: **auth**. This is module responsible for the authentication domain, which is responsible to handle accounts and authenticating the usage of those accounts.
+
+**ps:** There is a route called `auth/v1/account-balances`. This is just and example code of how I would authenticate a given route. Ideally it shouldn't be implemented in the `auth` module, but in another module according to the domain design.
 
 The auth module is organized following a **ports and adapters** pattern, where the each connection to outside world (receiving an HTTP request or accessing a database) is an adapter, that adapts a data model to something that our application can use. This allows us to achieve a good decoupling between our domain and the outside world. The folder structure for the auth module is:
 * adapters: here we implement all the adapters that will interact with the outside world. For this test there are two groups of adapters:
@@ -22,6 +26,12 @@ The auth module is organized following a **ports and adapters** pattern, where t
 
 A better visualization of all those layers, how they interact, and how they achieve the decoupling between the outside world and the application is represented by the bellow diagram. It has almost all the classes used in the __create account__ use case.
 ![C3 Diagram Example](docs/backend-c3-diagram.jpg)
+
+### API design
+The APIs follow the REST architectural style, resources to define the URL paths. The basic structure of a route is: `domain/version/resource`. So, for the auth domain, the endpoints are:
+* POST auth/v1/accounts: it creates a new account.
+* POST auth/v1/login: authenticates an account.
+* GET auth/v1/account-balances: retrieves the current balance for a given account.
 
 ## Testing Strategy
 The application is only unit tested. Those tests were written with development, in TDD style, and they test each component in completely isolation from other components. I didn't add any integration tests because I didn't want to deal with having a different database for those tests given the time constraint for this project.
